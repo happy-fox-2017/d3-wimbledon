@@ -14,7 +14,10 @@ let svg = d3.select('#results')
   .style('background-image', 'url(https://drscdn.500px.org/photo/209832069/q%3D80_h%3D300/3a332948213c84d2a509d54ed3ca1d00)')
   .style('margin', margin)
   .style('margin-left', marginLeft)
-  .style('overflow', 'inherit')
+  .style('overflow', 'inherit');
+
+
+
 
 // Data reloading
 let reload = () => {
@@ -22,6 +25,7 @@ let reload = () => {
   d3.tsv('afcw-results.tsv', (rows) => {
     redraw(rows)
   })
+
 }
 
 // redraw function
@@ -50,7 +54,7 @@ let redraw = (data) => {
   let xAxis = d3.axisBottom(xScale).ticks(dataset.length)
 
   let t = d3.transition()
-  .duration(200)
+  .duration(300)
   .ease(d3.easeLinear)
 
   svg.selectAll('rect')
@@ -72,6 +76,15 @@ let redraw = (data) => {
   })
   .attr('fill', (d, i) => {
     return 'darkgrey'
+  })
+  .on('mouseover', function(d, i) {
+    d3.select(this).transition(t)
+    .style('fill', '#bada55')
+  })
+  .on('mouseout', function(d, i) {
+    d3.select(this).transition(t)
+    .delay(100)
+    .style('fill', colorScale(d.GoalsScored))
   })
   .transition(t)
   .delay((d,i) => {
