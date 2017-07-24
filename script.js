@@ -26,11 +26,30 @@ let redraw = (data) => {
 
   let dataset = []
   data.map(element => dataset.push(element.GoalsScored))
+  console.log(dataset)
 
-  console.log(dataset);
   const yScale = d3.scaleLinear()
   .domain([0, d3.max(dataset)])
-  .range([0, height])
+  .range([0, height - margin])
+
+  const xScale = d3.scaleLinear()
+  .domain([0, dataset.length])
+  .range([0, width - marginLeft])
+
+  const colorScale = d3.scaleLinear()
+  .domain([0, d3.max(dataset)])
+  .range(['peru', 'teal'])
+
+  var yAxis = d3.axisLeft(yScale).ticks(4).tickPadding(3)
+  var xAxis = d3.axisBottom(xScale).ticks(46).tickPadding(3)
+
+  svg.append('g')
+   .call(yAxis)
+   .attr('transform', `translate(${marginLeft})`)
+
+  svg.append('g')
+    .call(xAxis)
+    .attr('transform', `translate(${margin}, ${height - margin})`)
 
   // Your data to graph here
   svg.selectAll('rect')
@@ -39,15 +58,16 @@ let redraw = (data) => {
     .append('rect')
     .attr('class', 'bar')
     .attr('x', (d, i) => {
-      return i * 22
+      return xScale(i) + marginLeft
     })
     .attr('y', (d) => {
-      return height - yScale(d)
+      return height - yScale(d) - margin
     })
-    .attr('width', margin)
+    .attr('width', 10)
     .attr('height', (d) => {
       return yScale(d)
     })
+    .attr('fill', colorScale)
 }
 
 reload()
