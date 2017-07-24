@@ -77,7 +77,21 @@ let redraw = (data) => {
     return yScale(d)
   })
   .attr('fill', colorScale)
-  
+  .attr("y", function (d, i) {
+  return height;
+  })
+  .attr("height", 0)
+  .transition()
+  .duration(1500)
+  .delay(function (d, i) {
+    return i
+  })
+  .attr("y", function (d, i) {
+    return height - yScale(d);
+  })
+  .attr("height", function (d, i) {
+    return yScale(d);
+  });
 }
 
 reload()
