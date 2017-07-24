@@ -13,7 +13,6 @@ let svg = d3.select('#results')
   .attr('height', height)
   .style('background','#ffffff')
   .style('padding', '50px')
-  
 
 // Data reloading
 let reload = () => {
@@ -49,7 +48,7 @@ let redraw = (data) => {
   
   var x_axis = d3.axisBottom()
   .scale(xScale)
-  .ticks(47)
+  .ticks(data.length)
   
   svg.append("g")
   .attr("transform", "translate(0,0)")
