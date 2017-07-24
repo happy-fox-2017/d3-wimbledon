@@ -46,12 +46,14 @@ let redraw = (data) => {
   .domain([d3.max(dataset), 0])
   .range([0, height])
 
-  const colorScale = d3.scaleLinear()
+  let colorScale = d3.scaleLinear()
   .domain([0, d3.max(dataset)])
   .range(['#64edbc', '#6495ed'])
 
-  var yAxis = d3.axisLeft(yAxisScale).ticks(d3.max(dataset))
-  var xAxis = d3.axisBottom(xScale).ticks(dataset.length)
+  const yAxis = d3.axisLeft(yAxisScale).ticks(d3.max(dataset))
+  const xAxis = d3.axisBottom(xScale).ticks(dataset.length)
+
+  const trans = d3.transition().duration(300).ease(d3.easeLinear)
 
   svg.append('g')
    .call(yAxis)
@@ -67,23 +69,14 @@ let redraw = (data) => {
     .enter()
     .append('rect')
     .attr('class', 'bar')
-    .attr('x', (d, i) => {
-      return xScale(i)
-    })
-    .attr('y', (d) => {
-      return height - yScale(d)
-    })
+    .attr('x', (d, i) => xScale(i))
+    .attr('y', () => height)
     .attr('width', margin)
-    .attr('height', (d) => {
-      return yScale(d)
-    })
+    .attr('height', () => 0)
     .attr('fill', colorScale)
-    .on('mouseover', function () {
-      d3.select(this).style('fill', '#ed6495')
-    })
-    .on('mouseout', function (d) {
-      d3.select(this).style('fill', colorScale(d))
-    })
+    .transition(trans).delay((d, i) => i * 100)
+    .attr('height', (d) => yScale(d))
+    .attr('y', (d) => height - yScale(d))
 
 }
 

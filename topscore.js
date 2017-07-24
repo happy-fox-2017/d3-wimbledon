@@ -6,12 +6,14 @@ let leaderScale = d3.scaleLinear()
 
 const draw = (words) => {
   // Draw your data here...
+  console.log(words);
 
 }
 
 
 const load = () => {
   // Load your data here...
+  
 }
 
 load()
