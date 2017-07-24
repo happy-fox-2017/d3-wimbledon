@@ -68,7 +68,21 @@ let redraw = (data) => {
       d3.select(this).style('fill', colorScale(d))
     })
 
-
+          .attr("y", function (d, i) {
+               return height;
+          })
+          .attr("height", 0)
+          .transition()
+          .duration(1500)
+          .delay(function(d, i) {
+               return i
+          })
+          .attr("y", function (d,i) {
+               return height - yScale(d) - margin
+          })
+          .attr("height", function (d, i) {
+               return yScale(d)
+          })
 
 
   svg.append('g')
