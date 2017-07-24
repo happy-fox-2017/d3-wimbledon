@@ -37,7 +37,6 @@ let redraw = (data) => {
   .domain([0,d3.max(data)])
   .range([height, 0])
   
-  
   const xScale = d3.scaleLinear()
   .domain([0,data.length])
   .range([0,width])
@@ -48,7 +47,11 @@ let redraw = (data) => {
   
   var x_axis = d3.axisBottom()
   .scale(xScale)
-  .ticks(data.length)
+  .ticks(data.length-1)
+  
+  var colorScale = d3.scaleLinear()
+  .domain([0, d3.max(data)])
+  .range(['peru','teal'])
   
   svg.append("g")
   .attr("transform", "translate(0,0)")
@@ -69,10 +72,11 @@ let redraw = (data) => {
   .attr('y', (d) => {
     return 300 - yScale(d)
   })
-  .attr('width', 10)
+  .attr('width', 13)
   .attr('height', (d) => {
     return yScale(d)
   })
+  .attr('fill', colorScale)
   
 }
 
