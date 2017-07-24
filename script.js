@@ -12,6 +12,7 @@ let svg = d3.select('#results')
   .attr('width', width)
   .attr('height', height)
   .style('background', '#cacaca')
+  .style('padding', '50px')
 
 // Data reloading
 let reload = () => {
@@ -31,14 +32,25 @@ let reload = () => {
 // redraw function
 let redraw = (data) => {
   let yScale = d3.scaleLinear()
+    .domain([0, d3.max(data)])
+    .range([0,height])
+
+  let yAxisScale = d3.scaleLinear()
     .domain([d3.min(data),d3.max(data)])
-    .range([d3.min(data),d3.max(data)*50])
+    .range([height, d3.min(data)])
+
+  let xAxisScale = d3.scaleLinear()
+  .domain([0, data.length])
+  .range([0, width])
 
   let colorScale = d3.scaleLinear()
     .domain([d3.min(data),d3.max(data)])
     .range(['red','blue'])
 
   let barWidth = width / data.length
+
+  let axisLeft = d3.axisLeft().scale(yAxisScale).ticks(d3.max(data))
+  let axisBottom = d3.axisBottom().scale(xAxisScale).ticks(data.length)
 
   svg.selectAll('rect')
   .data(data)
@@ -56,6 +68,14 @@ let redraw = (data) => {
   .attr('height', (d) => {
     return yScale(d)
   })
+
+  svg.append('g')
+  .attr('transform', 'translate(0, 0)')
+  .call(axisLeft)
+
+  svg.append('g')
+  .attr('transform', `translate(0, ${height})`)
+  .call(axisBottom)
 }
 
 reload()
