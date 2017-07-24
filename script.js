@@ -45,11 +45,11 @@ let redraw = (data) => {
   
   var y_axis = d3.axisLeft()
   .scale(yScaleforaxes)
-  .ticks(4)
+  .ticks(d3.max(data))
   
   var x_axis = d3.axisBottom()
   .scale(xScale)
-  .ticks(46)
+  .ticks(47)
   
   svg.append("g")
   .attr("transform", "translate(0,0)")
