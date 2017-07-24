@@ -27,10 +27,11 @@ const draw = (words) => {
 
 const load = () => {
   // Load your data here...
-
   d3.tsv("stats.tsv", (rows)=>{
-    let datasetName = rows.map((i)=>{
-      return {text: i.Name, size: +i.G}
+    let datasetName = rows.filter((row) => {
+      return row.G > 0
+    }).map((i)=>{
+        return {text: i.Name.split(',').reverse().join(' , '), size:+i.G}
     })
 
     let layout = d3.layout.cloud()
