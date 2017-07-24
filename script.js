@@ -54,7 +54,7 @@ let redraw = (data) => {
   let x_axis = d3.axisBottom(xScale).ticks(data.length)
   const colorScale = d3.scaleLinear()
     .domain([0, d3.max(data)])
-    .range(['green', 'blue'])
+    .range(['magenta', 'turquoise'])
 
 
   console.log('data', data);
@@ -75,6 +75,21 @@ let redraw = (data) => {
       return yScale(d)
     })
     .attr('fill', colorScale)
+    .attr("y", function (d, i) {
+ 			return height;
+ 		})
+ 		.attr("height", 0)
+ 		.transition()
+ 		.duration(2000)
+ 		.delay(function (d, i) {
+ 			return i
+ 		})
+ 		.attr("y", function (d, i) {
+ 			return height - yScale(d);
+ 		})
+ 		.attr("height", function (d, i) {
+ 			return yScale(d);
+      });
 
   svg.append('g')
     .attr("transform", "translate(0,300)")
