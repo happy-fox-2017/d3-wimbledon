@@ -2,9 +2,9 @@
 
 // Our canvas
 const width = 750,
-  height = 300,
-  margin = 20
-marginLeft = 40
+      height = 300,
+      margin = 20,
+      marginLeft = 40
 
 // Drawing area
 let svg = d3.select('#results')
@@ -14,7 +14,17 @@ let svg = d3.select('#results')
 
 // Data reloading
 let reload = () => {
-  // Your data parsing here...
+  let GoalsScored = []
+  d3.tsv('stats.tsv', function (err, rows) {
+    if (err) {
+      console.log('TSV parse error' + err)
+    } else {
+      rows.forEach((row) => {
+        GoalsScored.push(row.GoalsScored)
+      })
+    }
+  })
+  redraw(GoalsScored)
 }
 
 // redraw function
