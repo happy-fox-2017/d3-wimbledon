@@ -52,6 +52,10 @@ let redraw = (data) => {
   let axisLeft = d3.axisLeft().scale(yAxisScale).ticks(d3.max(data))
   let axisBottom = d3.axisBottom().scale(xAxisScale).ticks(data.length)
 
+  let t = d3.transition()
+  .duration(300)
+  .ease(d3.easeLinear)
+
   svg.selectAll('rect')
   .data(data)
   .enter()
@@ -62,11 +66,21 @@ let redraw = (data) => {
     return i * barWidth
   })
   .attr('y', (d) => {
-    return height - yScale(d)
+    return height
   })
   .attr('width', width / data.length)
   .attr('height', (d) => {
+    return 0
+  })
+  .transition(t)
+  .delay((d,i) => {
+    return i * 100
+  })
+  .attr('height', (d, i) => {
     return yScale(d)
+  })
+  .attr('y', (d) => {
+    return height - yScale(d)
   })
 
   svg.append('g')
