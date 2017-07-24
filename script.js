@@ -83,9 +83,9 @@ let redraw = (data) => {
 		})
 		.attr("height", 0)
 		.transition()
-		.duration(500)
+		.duration(1500)
 		.delay(function (d, i) {
-			return i * 50;
+			return i
 		})
 		.attr("y", function (d, i) {
 			return height - yScale(d);
