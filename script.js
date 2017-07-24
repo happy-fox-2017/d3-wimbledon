@@ -78,6 +78,23 @@ let redraw = (data) => {
       d3.select(this).style('fill', colorScale(d))
     })
 
+		.attr("y", function (d, i) {
+			return height;
+		})
+		.attr("height", 0)
+		.transition()
+		.duration(500)
+		.delay(function (d, i) {
+			return i * 50;
+		})
+		.attr("y", function (d, i) {
+			return height - yScale(d);
+		})
+		.attr("height", function (d, i) {
+			return yScale(d);
+		});
+
+
     var xAxis = d3.axisBottom(xScale)
     .ticks(data.length);
 
@@ -91,6 +108,8 @@ let redraw = (data) => {
     svg.append('g')
     .attr('transform', 'translate(0,300)')
     .call(xAxis)
+
+
 }
 
 reload()
