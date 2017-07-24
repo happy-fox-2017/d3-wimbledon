@@ -85,12 +85,12 @@ let redraw = (dataset) => {
     return height - yScale(d)
   })
   .attr('fill', colorScale)
-  .on('mouseover', (d, i)=>{
-    d3.select(this).style('fill', '#bada55')
-  })
-  .on('mouseout', (d, i)=>{
-    d3.select(this).style('fill', colorScale(d))
-  })
+  // .on('mouseover', (d, i)=>{
+  //   d3.select(this).style('fill', '#bada55')
+  // })
+  // .on('mouseout', (d, i)=>{
+  //   d3.select(this).style('fill', colorScale(d))
+  // })
 }
 
 reload()
