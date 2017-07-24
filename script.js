@@ -30,21 +30,31 @@ let reload = () => {
 
 // redraw function
 let redraw = (data) => {
-  debugger
+  let yScale = d3.scaleLinear()
+    .domain([d3.min(data),d3.max(data)])
+    .range([d3.min(data),d3.max(data)*50])
+
+  let colorScale = d3.scaleLinear()
+    .domain([d3.min(data),d3.max(data)])
+    .range(['red','blue'])
+
+  let barWidth = width / data.length
+
   svg.selectAll('rect')
   .data(data)
   .enter()
   .append('rect')
   .attr('class', 'bar')
+  .attr('fill', colorScale)
   .attr('x', (d, i) => {
-    return i
+    return i * barWidth
   })
   .attr('y', (d) => {
-    return height - d
+    return height - yScale(d)
   })
-  .attr('width', width)
+  .attr('width', width / data.length)
   .attr('height', (d) => {
-    return d
+    return yScale(d)
   })
 }
 
