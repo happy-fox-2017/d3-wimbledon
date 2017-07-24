@@ -1,55 +1,65 @@
 /* global d3 */
 
 // Our canvas
-const width = 750,
-  height = 300,
+const width = 1000,
+  height = 400,
   margin = 20,
-  marginLeft = 40
+  marginLeft = 60
 
 // Drawing area
 let svg = d3.select('#results')
   .append('svg')
   .attr('width', width)
   .attr('height', height)
-  .style('background', '#cacaca')
+
+  // .style('paddingLeft', marginLeft)
+  .style('background', '#FAFAFA')
+  .style('border', '1px solid black')
+  .style('padding', '50px')
+  .style('overflow', 'visible')
 
 // Data reloading
 let reload = () => {
   // Your data parsing here...
   d3.tsv('afcw-results.tsv', (rows) => {
+    console.log(JSON.stringify(rows))
     redraw(rows)
   })
 }
 
 // redraw function
 let redraw = (data) => {
-
   let dataset = []
-  data.map(element => dataset.push(element.GoalsScored))
-  console.log(dataset)
+  data.forEach(function (res) {
+    dataset.push(res.GoalsScored)
+  })
 
   const yScale = d3.scaleLinear()
   .domain([0, d3.max(dataset)])
-  .range([0, height - margin])
+  .range([0, height])
 
   const xScale = d3.scaleLinear()
   .domain([0, dataset.length])
-  .range([0, width - marginLeft])
+  .range([0, width])
+
+  const yAxisScale = d3.scaleLinear()
+  .domain([d3.max(dataset), 0])
+  .range([0, height])
 
   const colorScale = d3.scaleLinear()
   .domain([0, d3.max(dataset)])
-  .range(['peru', 'teal'])
+  .range(['#64edbc', '#6495ed'])
 
-  var yAxis = d3.axisLeft(yScale).ticks(4).tickPadding(3)
-  var xAxis = d3.axisBottom(xScale).ticks(46).tickPadding(3)
+  var yAxis = d3.axisLeft(yAxisScale).ticks(d3.max(dataset))
+  var xAxis = d3.axisBottom(xScale).ticks(dataset.length)
 
   svg.append('g')
    .call(yAxis)
-   .attr('transform', `translate(${marginLeft})`)
+   .attr('transform', 'translate(-2, 0)')
 
   svg.append('g')
-    .call(xAxis)
-    .attr('transform', `translate(${margin}, ${height - margin})`)
+   .call(xAxis)
+    .attr('transform', 'translate(0, 400)')
 
   // Your data to graph here
   svg.selectAll('rect')
@@ -58,16 +68,23 @@ let redraw = (data) => {
     .append('rect')
     .attr('class', 'bar')
     .attr('x', (d, i) => {
-      return xScale(i) + marginLeft
+      return xScale(i)
     })
     .attr('y', (d) => {
-      return height - yScale(d) - margin
+      return height - yScale(d)
     })
-    .attr('width', 10)
+    .attr('width', margin)
     .attr('height', (d) => {
       return yScale(d)
     })
     .attr('fill', colorScale)
+    .on('mouseover', function () {
+      d3.select(this).style('fill', '#ed6495')
+    })
+    .on('mouseout', function (d) {
+      d3.select(this).style('fill', colorScale(d))
+    })
+
 }
 
 reload()
