@@ -1,10 +1,10 @@
 /* global d3 */
 
 // Our canvas
-const width = 1080,
+const width = 800,
       height = 300,
       margin = 20,
-      marginLeft = 20;
+      marginLeft = 40;
 
 const transition = d3.transition();
 var widthbar = 0;
